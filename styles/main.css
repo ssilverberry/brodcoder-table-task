@@ -1,0 +1,93 @@
+.tb-wrapper {
+  position: absolute;
+  left: 800px;
+  top: 80px;
+}
+.tb-wrapper__table table {
+  border: 1px solid #3498DB;
+  min-width: 50px;
+}
+.tb-wrapper__table td {
+  margin: 1px;
+  width: 50px;
+  height: 50px;
+  background-color: #3498DB;
+}
+.buttons__btn {
+  display:block;
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  margin: 1px;
+  cursor: pointer;
+  opacity: 1;
+  transition: all 0.5s;
+}
+.buttons__btn:hover {
+  opacity: 0.7;
+  display: block;
+}
+.buttons_top {
+  
+  top: -60px;
+  left: 1px;
+}
+.buttons_right {
+  top: 2.5px;
+  left: 225px;
+}
+.buttons_bot {
+  top: 225px;
+  left: 1px;
+}
+.buttons_left {
+  
+  top: 1px;
+  left: -60px
+}
+
+.button_add::before{
+  content: '';
+  position: absolute;
+  display: block;
+  width: 40px;
+  height: 5px;
+  background-color: #eee;
+  top: 44%;
+  left: 10%;
+  transform: scale(0.5);
+}
+.button_add::after{
+  content: '';
+  position: absolute;
+  display: block;
+  width: 5px;
+  height: 40px;
+  background-color: #eee;
+  top: 10%;
+  left: 44%;
+  transform: scale(0.5);
+}
+.button_minus::before {
+  content: '';
+  display: block;
+  width: 25px;
+  height: 5px;
+  background-color: #eee;
+  position:absolute;
+  top: 45%;
+  left: 25%;
+  transform: scale(0.5);
+}
+
+.buttons_minus {
+  background-color: #f44336;
+  border: none;
+}
+.buttons_plus {
+  border: none;
+  background-color: #F39C12;
+}
+.disabled {
+  display: none;
+}
