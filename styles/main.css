@@ -20,7 +20,7 @@
   height: 52px;
   cursor: pointer;
   opacity: 1;
-  transition: all 0.5s;
+  /*transition: all 0.5s;*/
 }
 .tbl-btns__btn:hover {
   opacity: 0.7;

@@ -1,127 +1,147 @@
-class btn_fx {
-    constructor() {
-       btn_top = null;
-       btn_right = null;
-       btn_bot = null;
-       btn_left = null;
-     }
-   };
-   
-  btn_fx.btn_top = document.querySelector('.tbl-btns__btn_top');
-  btn_fx.btn_right = document.querySelector('.tbl-btns__btn_right');
-  btn_fx.btn_bot = document.querySelector('.tbl-btns__btn_bot');
-  btn_fx.btn_left = document.querySelector('.tbl-btns__btn_left');
-  btn_fx.btn_left.classList.add('disabled');
-  btn_fx.btn_top.classList.add('disabled');
-  
-  btn_fx.addRow_fx = function() {
-    let table = document.querySelector('table');
-    let table_tr = document.querySelector('table tr');
+const table = document.querySelector('table');
+const leftBtn = document.querySelector('.wrapper-left');
+const topBtn = document.querySelector('.wrapper-top');
+leftBtn.classList.add('disabled');
+topBtn.classList.add('disabled');
+class TableSet {
+  static ifOneRow() {
+    const trTd = document.querySelectorAll('table tr');
+
+    if (trTd.length < 2) {
+      leftBtn.classList.add('disabled');
+    }
+    if (trTd[0].cells.length < 2) {
+      topBtn.classList.add('disabled');
+    }
+  }
+  static addListener() {
+    const tableTr = document.querySelectorAll('table tr');
+    const trTd = document.querySelectorAll('tr td');
+    const wrapperTbl = document.querySelector('.tbl').getBoundingClientRect();
+
+    for (let i = 0; i < tableTr.length; i += 1) {
+      tableTr[i].addEventListener('mouseover', () => {
+        const rIndex = tableTr[i].getAttribute('data-row-index');
+        leftBtn.setAttribute('data-row-index', `${rIndex}`);
+      });
+    }
+    for (let i = 0; i < trTd.length; i += 1) {
+      trTd[i].addEventListener('mouseover', () => {
+        const rIndex = trTd[i].getAttribute('data-cell-index');
+        const crds = trTd[i].getBoundingClientRect();
+        topBtn.setAttribute('data-cell-index', `${rIndex}`);
+        topBtn.style = `left: ${crds.left - wrapperTbl.left}px;`;
+        leftBtn.style = `top: ${crds.top - wrapperTbl.top}px;`;
+      });
+    }
+    TableSet.tableEvents();
+  }
+  static addRow() {
+    const tbl = document.querySelector('table tbody');
+    const tableTr = document.querySelector('tr');
+    const inc = Math.random();
     let tr = null;
-    let td = null;
-    
-    for (let row = 0; row < 1; row++) {
-      tr = document.createElement('tr');
-      for(let cell = 0; cell < table_tr.cells.length; cell++) {
-          td = document.createElement('td');
-          tr.appendChild(td);
-      }
-      table.appendChild(tr);
-      addListener();
-      if_one_row();
+
+    for (let row = 0; row < 1; row += 1) {
+      tr = tableTr.cloneNode(true);
+      tbl.appendChild(tr).setAttribute('data-row-index', `${inc}`);
+      leftBtn.setAttribute('data-row-index', `${inc}`);
+      TableSet.addListener();
     }
-  };
-  
-  btn_fx.addColumn_fx = function() {
-    let table = document.querySelector('.table'), table_tr = document.querySelectorAll('table tr'),
-        td;
-    for(let i = 0; i < table_tr.length; i++) {
+  }
+  static addColumn() {
+    const tableTr = document.querySelectorAll('table tr');
+    const inc = Math.random();
+    let td;
+
+    for (let i = 0; i < tableTr.length; i += 1) {
       td = document.createElement('td');
-      table_tr[i].appendChild(td);
-      addListener();
-      if_one_row();
+      tableTr[i].appendChild(td).setAttribute('data-cell-index', `${inc}`);
+      topBtn.setAttribute('data-cell-index', `${inc}`);
+      TableSet.addListener();
     }
   }
-  
-  btn_fx.deleteColumn_fx = function () {
-    let table = document.querySelector('table'), table_tr = document.querySelectorAll('table tr'), j;
-    for (j = 0; j < table_tr.length; j++) {
-      if_one_row();
-      table_tr[j].deleteCell(-1);
-    } 
-  }
-  
-  btn_fx.deleteRow_fx = function() {
-    let table = document.querySelector('table'), row;
-    for (row = 0; row < 1; row++) {
-      if_one_row();
-      table.deleteRow(-1);
+  static deleteColumn() {
+    const tableTr = document.querySelectorAll('tr td');
+
+    for (let j = 0; j < tableTr.length; j += 1) {
+      TableSet.ifOneRow();
+      if (tableTr[j].getAttribute('data-cell-index') === topBtn.getAttribute('data-cell-index')) {
+        tableTr[j].remove();
+      }
     }
+    TableSet.ifOneRow();
   }
-  
-  var table = document.querySelector('table');
-  
-  var move = function() {  
-    table = document.querySelector('table');
-    let crd = this.getBoundingClientRect();
-    let tbl = document.querySelector('table').getBoundingClientRect();
-    let tbl_wrapper = document.querySelector('.tbl').getBoundingClientRect();
-  
-    let coords = {
-      top: (tbl.height+5),
-      left: (crd.left - tbl_wrapper.left)
-    } 
-    btn_fx.btn_top.style = `left: ${coords.left}px;`;
-    btn_fx.btn_left.style = `top: ${crd.top - tbl_wrapper.top}px;`;
-  }
-  var addListener = function() {
-    let tr_td = document.querySelectorAll('tr td');
-    for( let i = 0; i < tr_td.length; i++){
-      tr_td[i].addEventListener('mouseover', move);
-      tr_td = document.querySelectorAll('tr td');
-      if_one_row();
+  static deleteRow() {
+    const tableTr = document.querySelectorAll('table tr');
+
+    for (let row = 0; row < tableTr.length; row += 1) {
+      TableSet.ifOneRow();
+      if (tableTr[row].getAttribute('data-row-index') === leftBtn.getAttribute('data-row-index')) {
+        tableTr[row].remove();
+      }
     }
+    TableSet.ifOneRow();
   }
-  
-  function if_one_row() {
-    let tr_td = document.querySelectorAll('table tr');
-  
-    if(tr_td.length <= 2) {
-      btn_fx.btn_left.style = `display: none`;
-    }
-    if(tr_td[0].cells.length <= 2)
-      btn_fx.btn_top.style = 'display: none';
+  static tableEvents() {
+    const botBtn = document.querySelector('.tbl-btns__btn_bot');
+    const rightBtn = document.querySelector('.tbl-btns__btn_right');
+
+    botBtn.addEventListener('click', this.addRow);
+    rightBtn.addEventListener('click', this.addColumn);
+    // leftBtn.addEventListener('click', this.ifOneRow);
+    leftBtn.addEventListener('click', this.deleteRow);
+    // topBtn.addEventListener('click', this.ifOneRow);
+    topBtn.addEventListener('click', this.deleteColumn);
+    table.addEventListener('mousemove', this.addListener);
+
+    table.addEventListener('mouseenter', () => {
+      leftBtn.classList.remove('disabled');
+      topBtn.classList.remove('disabled');
+      TableSet.ifOneRow();
+    });
+    table.addEventListener('mouseleave', () => {
+      leftBtn.classList.add('disabled');
+      topBtn.classList.add('disabled');
+
+      topBtn.addEventListener('mouseenter', () => {
+        topBtn.classList.remove('disabled');
+        TableSet.ifOneRow();
+      });
+      topBtn.addEventListener('mouseleave', () => {
+        topBtn.classList.add('disabled');
+      });
+      leftBtn.addEventListener('mouseenter', () => {
+        leftBtn.classList.remove('disabled');
+        TableSet.ifOneRow();
+      });
+      leftBtn.addEventListener('mouseleave', () => {
+        leftBtn.classList.add('disabled');
+      });
+    });
+    topBtn.addEventListener('mouseleave', () => {
+      table.addEventListener('mouseenter', () => {
+        topBtn.classList.remove('disabled');
+        TableSet.ifOneRow();
+      });
+      table.addEventListener('mouseleave', () => {
+        topBtn.classList.add('disabled');
+      });
+    });
+    leftBtn.addEventListener('mouseleave', () => {
+      table.addEventListener('mouseenter', () => {
+        leftBtn.classList.remove('disabled');
+        TableSet.ifOneRow();
+      });
+      table.addEventListener('mouseleave', () => {
+        leftBtn.classList.add('disabled');
+      });
+    });
   }
-  
-  btn_fx.btn_bot.addEventListener('click', btn_fx.addRow_fx);
-  btn_fx.btn_right.addEventListener('click', btn_fx.addColumn_fx);
-  btn_fx.btn_left.addEventListener('click', if_one_row);
-  btn_fx.btn_left.addEventListener('click', btn_fx.deleteRow_fx);
-  btn_fx.btn_top.addEventListener('click', if_one_row);
-  btn_fx.btn_top.addEventListener('click', btn_fx.deleteColumn_fx);
-  table.addEventListener('mousemove', addListener);
-  addListener();
-  table.addEventListener('mouseenter', () => {
-      btn_fx.btn_left.classList.remove('disabled');
-      btn_fx.btn_top.classList.remove('disabled');
-      display();
-  });
-  table.addEventListener('mouseleave', () => {
-    btn_fx.btn_left.classList.add('disabled');
-    btn_fx.btn_top.classList.add('disabled');
-    display();
-  });
-  function display () {
-    btn_fx.btn_left.addEventListener("mouseenter", () => {
-      btn_fx.btn_left.classList.remove('disabled');
-    });
-    btn_fx.btn_left.addEventListener("mouseleave", () => {
-      btn_fx.btn_left.classList.add('disabled');
-    });
-    btn_fx.btn_top.addEventListener("mouseenter", () => {
-      btn_fx.btn_top.classList.remove('disabled');
-    });
-    btn_fx.btn_top.addEventListener("mouseleave", () => {
-      btn_fx.btn_top.classList.add('disabled');
-    });
-  }
+}
+
+TableSet.addColumn();
+TableSet.addRow();
+TableSet.deleteColumn();
+TableSet.deleteRow();
+TableSet.addListener(); 
