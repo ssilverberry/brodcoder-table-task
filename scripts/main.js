@@ -1,35 +1,40 @@
-const table = document.querySelector('table');
-const leftBtn = document.querySelector('.wrapper-left');
-const topBtn = document.querySelector('.wrapper-top');
+const table = host.querySelector('table');
+const leftBtn = host.querySelector('.wrapper-left');
+const topBtn = host.querySelector('.wrapper-top');
 leftBtn.classList.add('disabled');
 topBtn.classList.add('disabled');
+
 class TableSet {
   static ifOneRow() {
-    const trTd = document.querySelectorAll('table tr');
-
+    const trTd = host.querySelectorAll('table tr');
+    const td = host.querySelectorAll('td');
     if (trTd.length < 2) {
       leftBtn.classList.add('disabled');
     }
-    if (trTd[0].cells.length < 2) {
+    if (td.length < 2) {
       topBtn.classList.add('disabled');
     }
   }
   static addListener() {
-    const tableTr = document.querySelectorAll('table tr');
-    const trTd = document.querySelectorAll('tr td');
-    const wrapperTbl = document.querySelector('.tbl').getBoundingClientRect();
+    const trTd = host.querySelectorAll('tr td');
+    const wrapperTbl = host.querySelector('.tbl').getBoundingClientRect();
+    const row = host.querySelectorAll('tr');
+    const cel = host.querySelectorAll('td');
 
-    for (let i = 0; i < tableTr.length; i += 1) {
-      tableTr[i].addEventListener('mouseover', () => {
-        const rIndex = tableTr[i].getAttribute('data-row-index');
-        leftBtn.setAttribute('data-row-index', `${rIndex}`);
+    for (let i = 0; i < row.length; i += 1) {
+      row[i].addEventListener('mouseover', () => {
+        leftBtn.rowIndex = row[i].rowIndex;
       });
     }
+    for (let i = 0; i < cel.length; i += 1) {
+      cel[i].addEventListener('mouseover', () => {
+        topBtn.cellIndex = cel[i].cellIndex;
+      });
+    }
+
     for (let i = 0; i < trTd.length; i += 1) {
       trTd[i].addEventListener('mouseover', () => {
-        const rIndex = trTd[i].getAttribute('data-cell-index');
         const crds = trTd[i].getBoundingClientRect();
-        topBtn.setAttribute('data-cell-index', `${rIndex}`);
         topBtn.style = `left: ${crds.left - wrapperTbl.left}px;`;
         leftBtn.style = `top: ${crds.top - wrapperTbl.top}px;`;
       });
@@ -37,65 +42,60 @@ class TableSet {
     TableSet.tableEvents();
   }
   static addRow() {
-    const tbl = document.querySelector('table tbody');
-    const tableTr = document.querySelector('tr');
-    const inc = Math.random();
+    const tbl = host.querySelector('table tbody');
+    const tableTr = host.querySelector('tr');
     let tr = null;
 
     for (let row = 0; row < 1; row += 1) {
       tr = tableTr.cloneNode(true);
-      tbl.appendChild(tr).setAttribute('data-row-index', `${inc}`);
-      leftBtn.setAttribute('data-row-index', `${inc}`);
+      tbl.appendChild(tr);
       TableSet.addListener();
     }
   }
   static addColumn() {
-    const tableTr = document.querySelectorAll('table tr');
-    const inc = Math.random();
+    const tableTr = host.querySelectorAll('table tr');
     let td;
 
     for (let i = 0; i < tableTr.length; i += 1) {
       td = document.createElement('td');
-      tableTr[i].appendChild(td).setAttribute('data-cell-index', `${inc}`);
-      topBtn.setAttribute('data-cell-index', `${inc}`);
+      tableTr[i].appendChild(td);
       TableSet.addListener();
     }
   }
   static deleteColumn() {
-    const tableTr = document.querySelectorAll('tr td');
+    const attribute = topBtn.cellIndex;
+    let child = host.querySelectorAll('td');
 
-    for (let j = 0; j < tableTr.length; j += 1) {
-      TableSet.ifOneRow();
-      if (tableTr[j].getAttribute('data-cell-index') === topBtn.getAttribute('data-cell-index')) {
-        tableTr[j].remove();
+    for (let i = 0; i < child.length; i +=1) {
+      if ( child[i].cellIndex === attribute) {
+        child[i].parentNode.removeChild(child[i]);
       }
+      child = host.querySelectorAll('td');
     }
     TableSet.ifOneRow();
   }
   static deleteRow() {
-    const tableTr = document.querySelectorAll('table tr');
+    let tableTr = host.querySelectorAll('tr');
 
-    for (let row = 0; row < tableTr.length; row += 1) {
-      TableSet.ifOneRow();
-      if (tableTr[row].getAttribute('data-row-index') === leftBtn.getAttribute('data-row-index')) {
-        tableTr[row].remove();
+    for (let i = 0; i < tableTr.length; i += 1) {
+      if (tableTr[i].rowIndex == leftBtn.rowIndex) {
+        tableTr[i].parentNode.removeChild(tableTr[i]);
       }
+      tableTr = host.querySelectorAll('tr');
     }
     TableSet.ifOneRow();
   }
   static tableEvents() {
-    const botBtn = document.querySelector('.tbl-btns__btn_bot');
-    const rightBtn = document.querySelector('.tbl-btns__btn_right');
+    const botBtn = host.querySelector('.tbl-btns__btn_bot');
+    const rightBtn = host.querySelector('.tbl-btns__btn_right');
 
     botBtn.addEventListener('click', this.addRow);
     rightBtn.addEventListener('click', this.addColumn);
-    // leftBtn.addEventListener('click', this.ifOneRow);
-    leftBtn.addEventListener('click', this.deleteRow);
-    // topBtn.addEventListener('click', this.ifOneRow);
+    leftBtn.addEventListener('click', this.deleteRow); 
     topBtn.addEventListener('click', this.deleteColumn);
-    table.addEventListener('mousemove', this.addListener);
 
     table.addEventListener('mouseenter', () => {
+      this.addListener();
       leftBtn.classList.remove('disabled');
       topBtn.classList.remove('disabled');
       TableSet.ifOneRow();
@@ -103,45 +103,23 @@ class TableSet {
     table.addEventListener('mouseleave', () => {
       leftBtn.classList.add('disabled');
       topBtn.classList.add('disabled');
-
       topBtn.addEventListener('mouseenter', () => {
         topBtn.classList.remove('disabled');
         TableSet.ifOneRow();
-      });
-      topBtn.addEventListener('mouseleave', () => {
-        topBtn.classList.add('disabled');
       });
       leftBtn.addEventListener('mouseenter', () => {
         leftBtn.classList.remove('disabled');
         TableSet.ifOneRow();
       });
-      leftBtn.addEventListener('mouseleave', () => {
-        leftBtn.classList.add('disabled');
-      });
-    });
-    topBtn.addEventListener('mouseleave', () => {
-      table.addEventListener('mouseenter', () => {
-        topBtn.classList.remove('disabled');
-        TableSet.ifOneRow();
-      });
-      table.addEventListener('mouseleave', () => {
-        topBtn.classList.add('disabled');
-      });
     });
     leftBtn.addEventListener('mouseleave', () => {
-      table.addEventListener('mouseenter', () => {
-        leftBtn.classList.remove('disabled');
-        TableSet.ifOneRow();
-      });
-      table.addEventListener('mouseleave', () => {
-        leftBtn.classList.add('disabled');
-      });
+      leftBtn.classList.add('disabled');
+    });
+    topBtn.addEventListener('mouseleave', () => {
+      topBtn.classList.add('disabled');
     });
   }
 }
-
-TableSet.addColumn();
-TableSet.addRow();
 TableSet.deleteColumn();
 TableSet.deleteRow();
-TableSet.addListener(); 
+TableSet.addListener();
