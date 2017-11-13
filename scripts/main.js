@@ -79,9 +79,7 @@ class TableSet {
       child = host.querySelectorAll('td');
       
     }
-    if (table.rows.length < 2) {
-      leftBtn.classList.add('disabled');
-    }
+    this.ifOneRow();
   }
   deleteRow() {
     let tableTr = host.querySelectorAll('tr');
@@ -94,15 +92,20 @@ class TableSet {
       tableTr = host.querySelectorAll('tr');
       
     }
-    if (tableTr[0].cells.length < 2) {
-      topBtn.classList.add('disabled');
-    }
+    this.ifOneRow();
   }
   myClassRemove() {
     leftBtn.classList.remove('disabled');
     topBtn.classList.remove('disabled');
     const trTd = host.querySelector('table');
     const td = host.querySelector('tr');
+  
+    if (trTd.rows.length < 2) {
+      leftBtn.classList.add('disabled');
+    }
+    if (td.cells.length < 2) {
+      topBtn.classList.add('disabled');
+    }
   }
   tableEvents() {
     let tableTr = host.querySelectorAll('tr');
