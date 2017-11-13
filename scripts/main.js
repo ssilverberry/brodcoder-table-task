@@ -106,7 +106,10 @@ class TableSet {
     topBtn.addEventListener('click', this.ifOneColumn);
   
     table.addEventListener('mousemove', this.addListener);
-
+    table.addEventListener('mouseenter', () => {
+      leftBtn.classList.remove('disabled');
+      topBtn.classList.remove('disabled');
+    });
     table.addEventListener('mouseleave', () => {
       leftBtn.classList.add('disabled');
       topBtn.classList.add('disabled');
