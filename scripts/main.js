@@ -8,13 +8,14 @@ topBtn.classList.add('disabled');
 
 class TableSet {
   ifOneRow() {
-    const trTd = host.querySelectorAll('table tr');
-    const td = host.querySelector('tr td');
-
-    if (trTd.length < 2) {
+    const trTd = host.querySelector('table');
+    if (trTd.rows.length < 2) {
       leftBtn.classList.add('disabled');
     }
-    if (td.length < 2) {
+  }
+  ifOneColumn() {
+    const td = host.querySelector('tr');
+    if (td.cells.length < 2) {
       topBtn.classList.add('disabled');
     }
   } 
@@ -79,7 +80,7 @@ class TableSet {
       child = host.querySelectorAll('td');
       
     }
-    this.ifOneRow();
+    
   }
   deleteRow() {
     let tableTr = host.querySelectorAll('tr');
@@ -92,20 +93,11 @@ class TableSet {
       tableTr = host.querySelectorAll('tr');
       
     }
-    this.ifOneRow();
   }
   myClassRemove() {
     leftBtn.classList.remove('disabled');
     topBtn.classList.remove('disabled');
-    const trTd = host.querySelector('table');
-    const td = host.querySelector('tr');
-  
-    if (trTd.rows.length < 2) {
-      leftBtn.classList.add('disabled');
-    }
-    if (td.cells.length < 2) {
-      topBtn.classList.add('disabled');
-    }
+    
   }
   tableEvents() {
     let tableTr = host.querySelectorAll('tr');
@@ -114,6 +106,8 @@ class TableSet {
     rightBtn.addEventListener('click', this.addColumn);
     leftBtn.addEventListener('click', this.deleteRow); 
     topBtn.addEventListener('click', this.deleteColumn);
+    leftBtn.addEventListener('click', this.ifOneRow); 
+    topBtn.addEventListener('click', this.ifOneRow);
   
     table.addEventListener('mousemove', this.addListener);
     table.addEventListener('mouseenter', this.myClassRemove);
