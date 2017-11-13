@@ -94,11 +94,7 @@ class TableSet {
       
     }
   }
-  myClassRemove() {
-    leftBtn.classList.remove('disabled');
-    topBtn.classList.remove('disabled');
-    
-  }
+
   tableEvents() {
     let tableTr = host.querySelectorAll('tr');
     let child = host.querySelectorAll('td');
@@ -107,10 +103,10 @@ class TableSet {
     leftBtn.addEventListener('click', this.deleteRow); 
     topBtn.addEventListener('click', this.deleteColumn);
     leftBtn.addEventListener('click', this.ifOneRow); 
-    topBtn.addEventListener('click', this.ifOneRow);
+    topBtn.addEventListener('click', this.ifOneColumn);
   
     table.addEventListener('mousemove', this.addListener);
-    table.addEventListener('mouseenter', this.myClassRemove);
+
     table.addEventListener('mouseleave', () => {
       leftBtn.classList.add('disabled');
       topBtn.classList.add('disabled');
