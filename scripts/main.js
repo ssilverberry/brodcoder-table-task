@@ -94,7 +94,7 @@ class TableSet {
       tableTr = host.querySelectorAll('tr');
       
     }
-    if (tableTr.cells.length < 2) {
+    if (tableTr[0].cells.length < 2) {
       topBtn.classList.add('disabled');
     }
   }
