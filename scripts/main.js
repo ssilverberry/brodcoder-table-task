@@ -102,7 +102,9 @@ class TableSet {
     rightBtn.addEventListener('click', this.addColumn);
     leftBtn.addEventListener('click', this.deleteRow); 
     topBtn.addEventListener('click', this.deleteColumn);
-  
+    
+    leftBtn.addEventListener('click', this.ifOneRow); 
+    topBtn.addEventListener('click', this.ifOneColumn);
     table.addEventListener('mousemove', this.addListener);
     table.addEventListener('mouseenter', () => {
       leftBtn.classList.remove('disabled');
