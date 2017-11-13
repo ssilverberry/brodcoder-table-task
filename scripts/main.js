@@ -104,15 +104,13 @@ class TableSet {
     rightBtn.addEventListener('click', this.addColumn);
     leftBtn.addEventListener('click', this.deleteRow); 
     topBtn.addEventListener('click', this.deleteColumn);
-
+  
     table.addEventListener('mousemove', this.addListener);
     table.addEventListener('mouseenter', this.myClassRemove);
-    table.addEventListener('mouseleave', this.ifOneRow);
     table.addEventListener('mouseleave', () => {
       leftBtn.classList.add('disabled');
       topBtn.classList.add('disabled');
-      //topBtn.style.left = '0px';
-      //leftBtn.style.top = '0px';
+      this.ifOneRow();
       topBtn.addEventListener('mouseenter', () => {
         topBtn.classList.remove('disabled');
         
@@ -123,9 +121,11 @@ class TableSet {
     });
     leftBtn.addEventListener('mouseleave', () => {
       leftBtn.classList.add('disabled');
+      this.ifOneRow();
     });
     topBtn.addEventListener('mouseleave', () => {
       topBtn.classList.add('disabled');
+      this.ifOneRow();
     });
   }
 }
