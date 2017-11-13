@@ -96,6 +96,7 @@ class TableSet {
   myClassRemove() {
     leftBtn.classList.remove('disabled');
     topBtn.classList.remove('disabled');
+    this.ifOneRow();
   }
   tableEvents() {
     let tableTr = host.querySelectorAll('tr');
