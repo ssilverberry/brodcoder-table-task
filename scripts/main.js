@@ -99,7 +99,7 @@ class TableSet {
     topBtn.classList.remove('disabled');
     const trTd = host.querySelector('table');
     const td = host.querySelector('tr');
-    console.log(td);
+  
     if (trTd.rows.length < 2) {
       leftBtn.classList.add('disabled');
     }
@@ -120,10 +120,9 @@ class TableSet {
     table.addEventListener('mouseleave', () => {
       leftBtn.classList.add('disabled');
       topBtn.classList.add('disabled');
-      this.ifOneRow();
+      
       topBtn.addEventListener('mouseenter', () => {
         topBtn.classList.remove('disabled');
-        
       });
       leftBtn.addEventListener('mouseenter', () => {
         leftBtn.classList.remove('disabled');
@@ -131,11 +130,9 @@ class TableSet {
     });
     leftBtn.addEventListener('mouseleave', () => {
       leftBtn.classList.add('disabled');
-      this.ifOneRow();
     });
     topBtn.addEventListener('mouseleave', () => {
       topBtn.classList.add('disabled');
-      this.ifOneRow();
     });
   }
 }
