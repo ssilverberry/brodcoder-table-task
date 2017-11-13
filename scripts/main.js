@@ -9,7 +9,7 @@ topBtn.classList.add('disabled');
 class TableSet {
   ifOneRow() {
     const trTd = host.querySelectorAll('table tr');
-    const td = host.querySelectorAll('tr td');
+    const td = host.querySelector('tr td');
     console.log(td);
     if (trTd.length < 2) {
       leftBtn.classList.add('disabled');
