@@ -98,12 +98,12 @@ class TableSet {
     leftBtn.classList.remove('disabled');
     topBtn.classList.remove('disabled');
     const trTd = host.querySelectorAll('table tr');
-    const td = host.querySelector('td');
+    const td = host.querySelector('tr');
     console.log(td);
     if (trTd.length < 2) {
       leftBtn.classList.add('disabled');
     }
-    if (td.length < 2) {
+    if (td.cells.length < 2) {
       topBtn.classList.add('disabled');
     }
   }
